@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Bestie! 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #f5c842;
+    --rose: #ff6b9d;
+    --lavender: #c77dff;
+    --teal: #72efdd;
+    --dark: #0d0014;
+    --mid: #1a0030;
+    --card-bg: rgba(255,255,255,0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: #fff;
+    font-family: 'Raleway', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 18px; height: 18px;
+    background: var(--rose);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, background 0.3s, width 0.3s, height 0.3s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.12s ease-out, top 0.12s ease-out, width 0.3s, height 0.3s;
+    opacity: 0.7;
+  }
+
+  /* PARTICLE CANVAS */
+  #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 60% 40%, #3a005a 0%, var(--dark) 70%);
+    overflow: hidden;
+  }
+
+  .hero-bg-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(199,125,255,0.25) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+  }
+
+  .balloons {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .balloon {
+    position: absolute;
+    bottom: -120px;
+    width: 55px; height: 68px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: float-up linear infinite;
+    opacity: 0.85;
+    filter: blur(0.5px);
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -28px; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 28px;
+    background: rgba(255,255,255,0.4);
+  }
+  @keyframes float-up {
+    0% { transform: translateY(0) rotate(-5deg); opacity: 0; }
+    5% { opacity: 0.85; }
+    95% { opacity: 0.85; }
+    100% { transform: translateY(-110vh) rotate(8deg); opacity: 0; }
+  }
+
+  .hero-label {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fade-in 1s 0.4s ease forwards;
+  }
+
+  .hero-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 1.05;
+    background: linear-gradient(135deg, #fff 0%, var(--gold) 40%, var(--rose) 70%, var(--lavender) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(245,200,66,0.4));
+    opacity: 0;
+    animation: slide-up 1s 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    color: var(--rose);
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: slide-up 1s 1s cubic-bezier(0.16,1,0.3,1) forwards;
+    text-shadow: 0 0 40px rgba(255,107,157,0.5);
+  }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    max-width: 500px;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fade-in 1s 1.4s ease forwards;
+  }
+
+  .scroll-hint {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fade-in 1s 2s ease forwards;
+  }
+  .scroll-hint span { font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; }
+  .scroll-arrow {
+    width: 24px; height: 24px;
+    border-right: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    transform: rotate(45deg);
+    animation: bounce-arrow 1.5s ease-in-out infinite;
+  }
+  @keyframes bounce-arrow { 0%,100% { transform: rotate(45deg) translateY(0); } 50% { transform: rotate(45deg) translateY(6px); } }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* ===== 3D PHOTO GALLERY ===== */
+  #gallery {
+    min-height: 100vh;
+    padding: 6rem 2rem;
+    background: linear-gradient(180deg, var(--dark) 0%, var(--mid) 50%, var(--dark) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--gold), var(--rose));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  /* 3D CAROUSEL */
+  .carousel-scene {
+    perspective: 1200px;
+    width: 100%;
+    max-width: 900px;
+    height: 420px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .carousel {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .photo-card {
+    position: absolute;
+    width: 280px;
+    height: 360px;
+    left: 50%;
+    top: 50%;
+    margin-left: -140px;
+    margin-top: -180px;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.4s;
+    backface-visibility: visible;
+    transform-style: preserve-3d;
+  }
+
+  .photo-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+
+  .photo-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .photo-icon {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 0 12px rgba(255,107,157,0.5));
+    animation: sway 3s ease-in-out infinite;
+  }
+  @keyframes sway { 0%,100% { transform: rotate(-5deg) scale(1); } 50% { transform: rotate(5deg) scale(1.05); } }
+
+  .photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem 1rem 1.2rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: #fff;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .photo-number {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.3rem;
+    display: block;
+    font-style: normal;
+  }
+
+  .upload-hint {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+    font-style: normal;
+    font-family: 'Raleway', sans-serif;
+    margin-top: 0.4rem;
+  }
+
+  /* Card colors */
+  .card-c1 .photo-placeholder { background: linear-gradient(135deg, #1a0030, #3a0060); }
+  .card-c2 .photo-placeholder { background: linear-gradient(135deg, #2d0025, #6b0040); }
+  .card-c3 .photo-placeholder { background: linear-gradient(135deg, #001a3a, #003a6b); }
+  .card-c4 .photo-placeholder { background: linear-gradient(135deg, #001a1a, #003a3a); }
+  .card-c5 .photo-placeholder { background: linear-gradient(135deg, #1a1a00, #3a3000); }
+  .card-c6 .photo-placeholder { background: linear-gradient(135deg, #1a000a, #3a0020); }
+  .card-c7 .photo-placeholder { background: linear-gradient(135deg, #00101a, #002040); }
+  .card-c8 .photo-placeholder { background: linear-gradient(135deg, #180030, #300055); }
+
+  .carousel-nav {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(10px);
+  }
+  .nav-btn:hover {
+    background: var(--rose);
+    border-color: var(--rose);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255,107,157,0.4);
+  }
+  .nav-dots {
+    display: flex;
+    gap: 8px;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.4);
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* ===== POLAROID STRIP ===== */
+  #memories {
+    padding: 6rem 2rem;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .polaroid-strip {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1100px;
+  }
+
+  .polaroid {
+    background: #fff;
+    padding: 14px 14px 50px;
+    width: 200px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+  }
+  .polaroid:nth-child(1) { transform: rotate(-4deg); }
+  .polaroid:nth-child(2) { transform: rotate(2deg); }
+  .polaroid:nth-child(3) { transform: rotate(-3deg); margin-top: 20px; }
+  .polaroid:nth-child(4) { transform: rotate(5deg); margin-top: -10px; }
+  .polaroid:nth-child(5) { transform: rotate(-2deg); margin-top: 15px; }
+  .polaroid:hover { transform: rotate(0deg) scale(1.08) translateY(-10px) !important; z-index: 10; }
+
+  .polaroid-photo {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    border-radius: 2px;
+  }
+  .pol-c1 .polaroid-photo { background: linear-gradient(135deg, #ffd6e8, #ffe8d6); }
+  .pol-c2 .polaroid-photo { background: linear-gradient(135deg, #d6e8ff, #d6fffe); }
+  .pol-c3 .polaroid-photo { background: linear-gradient(135deg, #e8d6ff, #ffd6fb); }
+  .pol-c4 .polaroid-photo { background: linear-gradient(135deg, #d6ffe8, #e8ffd6); }
+  .pol-c5 .polaroid-photo { background: linear-gradient(135deg, #fff3d6, #ffd6d6); }
+
+  .polaroid-label {
+    position: absolute;
+    bottom: 10px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    color: #444;
+    font-size: 1rem;
+  }
+
+  /* ===== MESSAGE SECTION ===== */
+  #message {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem;
+    background: radial-gradient(ellipse at 40% 60%, #2d0050 0%, var(--dark) 65%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .msg-card {
+    max-width: 700px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    line-height: 0.5;
+    color: var(--lavender);
+    opacity: 0.3;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .msg-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.7rem);
+    line-height: 1.9;
+    color: rgba(255,255,255,0.9);
+    font-style: italic;
+  }
+
+  .msg-text em {
+    color: var(--rose);
+    font-style: normal;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(255,107,157,0.4);
+  }
+
+  .msg-signature {
+    margin-top: 2.5rem;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--gold);
+    filter: drop-shadow(0 0 10px rgba(245,200,66,0.4));
+  }
+
+  /* Floating hearts */
+  .hearts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .heart {
+    position: absolute;
+    bottom: -80px;
+    animation: float-heart linear infinite;
+    opacity: 0;
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 6px rgba(255,107,157,0.6));
+  }
+  @keyframes float-heart {
+    0% { opacity: 0; transform: translateY(0) scale(0.5) rotate(-10deg); }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(-100vh) scale(1.2) rotate(15deg); }
+  }
+
+  /* ===== CAKE SECTION ===== */
+  #cake {
+    padding: 6rem 2rem;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cake-wrapper {
+    margin: 3rem 0;
+    position: relative;
+    display: inline-block;
+  }
+
+  .cake-3d {
+    font-size: 9rem;
+    line-height: 1;
+    animation: cake-bounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 10px 30px rgba(245,200,66,0.3));
+    display: block;
+    transform-style: preserve-3d;
+  }
+  @keyframes cake-bounce {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+
+  .candle-glow {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255,220,80,0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: flicker 0.15s ease-in-out infinite alternate;
+  }
+  @keyframes flicker {
+    0% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+  }
+
+  .wish-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    background: linear-gradient(90deg, var(--gold), var(--rose), var(--lavender));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: color-shift 4s linear infinite;
+    background-size: 200%;
+  }
+  @keyframes color-shift {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+  }
+
+  /* ===== CONFETTI BUTTON ===== */
+  .confetti-btn {
+    margin-top: 2.5rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--rose), var(--lavender));
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(199,125,255,0.4);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .confetti-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+    transform-origin: left;
+  }
+  .confetti-btn:hover::before { transform: scaleX(1); }
+  .confetti-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(199,125,255,0.5); }
+  .confetti-btn:active { transform: scale(0.97); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.4);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+  }
+  footer span { color: var(--rose); }
+
+  /* ===== PHOTO UPLOAD ZONE ===== */
+  .upload-zone {
+    max-width: 700px;
+    margin: 3rem auto 0;
+    padding: 2rem;
+    border: 2px dashed rgba(199,125,255,0.35);
+    border-radius: 16px;
+    background: rgba(199,125,255,0.05);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .upload-zone:hover {
+    border-color: var(--lavender);
+    background: rgba(199,125,255,0.1);
+  }
+  .upload-zone input { display: none; }
+  .upload-zone p { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 0.5rem; }
+  .upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+  }
+  .lightbox.open { display: flex; }
+  .lightbox-img {
+    max-width: 80vw;
+    max-height: 80vh;
+    border-radius: 16px;
+    box-shadow: 0 0 80px rgba(199,125,255,0.3);
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 2rem; right: 2rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .carousel-scene { height: 340px; }
+    .photo-card { width: 230px; height: 290px; margin-left: -115px; margin-top: -145px; }
+    .polaroid { width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+</div>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-bg-glow"></div>
+  <div class="balloons" id="balloons"></div>
+
+  <p class="hero-label">✨ Today is extra special ✨</p>
+  <h1 class="hero-title">Happy Birthday!</h1>
+  <h2 class="hero-name">My Dearest Bestie 🌸</h2>
+  <p class="hero-sub">
+    A whole year of laughter, adventures, secrets shared, and memories made — here's to celebrating the most amazing human I know. 🎉
+  </p>
+  <div class="scroll-hint">
+    <span>Our Story</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ===== 3D GALLERY ===== -->
+<section id="gallery">
+  <h2 class="section-title">Our Memories 🎞</h2>
+  <p class="section-subtitle">Every frame, a story we lived together</p>
+
+  <div class="carousel-scene">
+    <div class="carousel" id="carousel">
+      <!-- Cards will be injected by JS -->
+    </div>
+  </div>
+
+  <div class="carousel-nav">
+    <button class="nav-btn" onclick="rotateCarousel(-1)">←</button>
+    <div class="nav-dots" id="navDots"></div>
+    <button class="nav-btn" onclick="rotateCarousel(1)">→</button>
+  </div>
+
+  <!-- Upload Zone -->
+  <div class="upload-zone" onclick="document.getElementById('photoInput').click()">
+    <div class="upload-icon">📸</div>
+    <strong style="color:#fff">Add Your Photos Together</strong>
+    <p>Click to upload your favorite memories — they'll appear in the 3D carousel above!</p>
+    <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+  </div>
+</section>
+
+<!-- ===== POLAROID STRIP ===== -->
+<section id="memories">
+  <h2 class="section-title">Golden Moments 🌟</h2>
+  <p class="section-subtitle">A few of our favourites</p>
+
+  <div class="polaroid-strip" id="polaroidStrip">
+    <div class="polaroid pol-c1">
+      <div class="polaroid-photo">🌊</div>
+      <div class="polaroid-label">Beach Vibes</div>
+    </div>
+    <div class="polaroid pol-c2">
+      <div class="polaroid-photo">🌙</div>
+      <div class="polaroid-label">Late Nights</div>
+    </div>
+    <div class="polaroid pol-c3">
+      <div class="polaroid-photo">🎢</div>
+      <div class="polaroid-label">Adventure!</div>
+    </div>
+    <div class="polaroid pol-c4">
+      <div class="polaroid-photo">🍕</div>
+      <div class="polaroid-label">Food Runs</div>
+    </div>
+    <div class="polaroid pol-c5">
+      <div class="polaroid-photo">💫</div>
+      <div class="polaroid-label">Always Us</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MESSAGE ===== -->
+<section id="message">
+  <div class="hearts" id="hearts"></div>
+  <div class="msg-card">
+    <span class="quote-mark">"</span>
+    <p class="msg-text">
+      You are not just my best friend — you are the person who showed up at <em>3 AM</em> with snacks when I needed it most, who laughed so hard we both cried, who turned every ordinary Tuesday into something worth remembering.<br><br>
+      On this special day, I want you to know: <em>you are so deeply loved</em>. May this year bring you everything your heart has been quietly wishing for. 🌸
+    </p>
+    <div class="msg-signature">With all my heart 💕</div>
+  </div>
+</section>
+
+<!-- ===== CAKE ===== -->
+<section id="cake">
+  <h2 class="section-title">Make a Wish! 🌟</h2>
+  <p class="section-subtitle">Blow out the candles and dream big</p>
+
+  <div class="cake-wrapper">
+    <div class="candle-glow"></div>
+    <span class="cake-3d">🎂</span>
+  </div>
+
+  <p class="wish-text">Wishing you a year full of magic ✨</p>
+  <button class="confetti-btn" onclick="launchConfetti()">🎉 Celebrate!</button>
+</section>
+
+<footer>
+  Made with <span>♥</span> just for you — because you deserve the whole world 🌍
+</footer>
+
+<script>
+/* ============================
+   CUSTOM CURSOR
+============================ */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+  ring.style.left = mx + 'px';
+  ring.style.top = my + 'px';
+});
+
+/* ============================
+   PARTICLE CANVAS
+============================ */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function createParticle() {
+  const colors = ['#f5c842','#ff6b9d','#c77dff','#72efdd','#fff'];
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 0.3,
+    opacity: Math.random(),
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    color: colors[Math.floor(Math.random() * colors.length)]
+  };
+}
+
+for (let i = 0; i < 120; i++) particles.push(createParticle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity * 0.6;
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ============================
+   BALLOONS
+============================ */
+const balloonColors = ['#ff6b9d','#c77dff','#f5c842','#72efdd','#ff9e6b','#6baaff'];
+const balloonContainer = document.getElementById('balloons');
+for (let i = 0; i < 14; i++) {
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.left = (5 + Math.random() * 90) + '%';
+  b.style.background = balloonColors[i % balloonColors.length];
+  b.style.animationDuration = (8 + Math.random() * 10) + 's';
+  b.style.animationDelay = (Math.random() * 8) + 's';
+  b.style.width = (45 + Math.random() * 25) + 'px';
+  b.style.height = (55 + Math.random() * 30) + 'px';
+  balloonContainer.appendChild(b);
+}
+
+/* ============================
+   3D CAROUSEL
+============================ */
+const photoData = [
+  { icon: '🤳', label: 'Our First Selfie', hint: 'Replace with your photo' },
+  { icon: '🎉', label: 'Party Night', hint: 'Replace with your photo' },
+  { icon: '🌅', label: 'Sunrise Together', hint: 'Replace with your photo' },
+  { icon: '🎵', label: 'Concert Memories', hint: 'Replace with your photo' },
+  { icon: '✈️', label: 'Our Trip', hint: 'Replace with your photo' },
+  { icon: '🍦', label: 'Ice Cream Runs', hint: 'Replace with your photo' },
+  { icon: '🎬', label: 'Movie Nights', hint: 'Replace with your photo' },
+  { icon: '🌸', label: 'Spring Walk', hint: 'Replace with your photo' },
+];
+
+const colorClasses = ['card-c1','card-c2','card-c3','card-c4','card-c5','card-c6','card-c7','card-c8'];
+
+const carouselEl = document.getElementById('carousel');
+const dotsContainer = document.getElementById('navDots');
+const numCards = photoData.length;
+const theta = (2 * Math.PI) / numCards;
+const radius = 350;
+let currentAngle = 0;
+let uploadedPhotos = [];
+
+function buildCarousel() {
+  carouselEl.innerHTML = '';
+  dotsContainer.innerHTML = '';
+
+  photoData.forEach((data, i) => {
+    const card = document.createElement('div');
+    card.className = `photo-card ${colorClasses[i]}`;
+    const angle = theta * i;
+    card.style.transform = `rotateY(${angle}rad) translateZ(${radius}px)`;
+
+    const inner = document.createElement('div');
+    inner.className = 'photo-card-inner';
+
+    const placeholder = document.createElement('div');
+    placeholder.className = 'photo-placeholder';
+
+    if (uploadedPhotos[i]) {
+      const img = document.createElement('img');
+      img.src = uploadedPhotos[i];
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:18px;';
+      img.onclick = () => openLightbox(uploadedPhotos[i]);
+      inner.appendChild(img);
+    } else {
+      const icon = document.createElement('div');
+      icon.className = 'photo-icon';
+      icon.textContent = data.icon;
+
+      const hint = document.createElement('div');
+      hint.className = 'upload-hint';
+      hint.textContent = '📷 ' + data.hint;
+
+      placeholder.appendChild(icon);
+      placeholder.appendChild(hint);
+      inner.appendChild(placeholder);
+    }
+
+    const caption = document.createElement('div');
+    caption.className = 'photo-caption';
+    caption.innerHTML = `${data.label}<span class="photo-number">Memory ${String(i+1).padStart(2,'0')}</span>`;
+    inner.appendChild(caption);
+
+    card.appendChild(inner);
+    carouselEl.appendChild(card);
+
+    // Dot
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToCard(i);
+    dotsContainer.appendChild(dot);
+  });
+}
+buildCarousel();
+
+let activeIdx = 0;
+function goToCard(idx) {
+  activeIdx = ((idx % numCards) + numCards) % numCards;
+  currentAngle = -theta * activeIdx;
+  carouselEl.style.transform = `rotateY(${currentAngle}rad)`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+}
+
+function rotateCarousel(dir) {
+  goToCard(activeIdx + dir);
+}
+
+// Auto-rotate
+let autoRotate = setInterval(() => rotateCarousel(1), 4000);
+carouselEl.addEventListener('mouseenter', () => clearInterval(autoRotate));
+carouselEl.addEventListener('mouseleave', () => { autoRotate = setInterval(() => rotateCarousel(1), 4000); });
+
+// Drag support
+let startX = 0;
+carouselEl.addEventListener('mousedown', e => startX = e.clientX);
+carouselEl.addEventListener('mouseup', e => {
+  const diff = e.clientX - startX;
+  if (Math.abs(diff) > 40) rotateCarousel(diff < 0 ? 1 : -1);
+});
+
+/* ============================
+   PHOTO UPLOAD
+============================ */
+function handlePhotoUpload(e) {
+  const files = Array.from(e.target.files);
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      uploadedPhotos[i] = ev.target.result;
+      // Also update polaroids if we have enough photos
+      updatePolaroids();
+      buildCarousel();
+      goToCard(i);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function updatePolaroids() {
+  const polaroids = document.querySelectorAll('.polaroid');
+  uploadedPhotos.forEach((src, i) => {
+    if (polaroids[i]) {
+      const photoEl = polaroids[i].querySelector('.polaroid-photo');
+      photoEl.innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:2px;" onclick="openLightbox('${src}')">`;
+    }
+  });
+}
+
+/* ============================
+   LIGHTBOX
+============================ */
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+/* ============================
+   FLOATING HEARTS
+============================ */
+const heartsContainer = document.getElementById('hearts');
+const heartEmojis = ['💕','💖','💗','💓','💝','✨','🌸','💫'];
+for (let i = 0; i < 20; i++) {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  h.style.left = (Math.random() * 100) + '%';
+  h.style.animationDuration = (6 + Math.random() * 8) + 's';
+  h.style.animationDelay = (Math.random() * 10) + 's';
+  h.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+  heartsContainer.appendChild(h);
+}
+
+/* ============================
+   CONFETTI
+============================ */
+function launchConfetti() {
+  const colors = ['#f5c842','#ff6b9d','#c77dff','#72efdd','#fff','#ff9e6b'];
+  const confettiCanvas = document.createElement('canvas');
+  confettiCanvas.style.cssText = 'position:fixed;inset:0;z-index:99999;pointer-events:none;';
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+  document.body.appendChild(confettiCanvas);
+  const cc = confettiCanvas.getContext('2d');
+
+  let pieces = Array.from({length: 200}, () => ({
+    x: Math.random() * confettiCanvas.width,
+    y: -20,
+    w: 6 + Math.random() * 10,
+    h: 4 + Math.random() * 6,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    vx: (Math.random() - 0.5) * 5,
+    vy: 3 + Math.random() * 5,
+    rot: Math.random() * 360,
+    vrot: (Math.random() - 0.5) * 10,
+    opacity: 1
+  }));
+
+  let frame;
+  function draw() {
+    cc.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    pieces.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vrot;
+      p.vy += 0.1;
+      if (p.y > confettiCanvas.height + 30) { p.y = -20; p.x = Math.random() * confettiCanvas.width; p.opacity -= 0.015; }
+      cc.save();
+      cc.globalAlpha = Math.max(0, p.opacity);
+      cc.translate(p.x, p.y);
+      cc.rotate(p.rot * Math.PI / 180);
+      cc.fillStyle = p.color;
+      cc.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      cc.restore();
+    });
+    if (pieces.some(p => p.opacity > 0)) {
+      frame = requestAnimationFrame(draw);
+    } else {
+      cancelAnimationFrame(frame);
+      document.body.removeChild(confettiCanvas);
+    }
+  }
+  draw();
+  setTimeout(() => { pieces.forEach(p => p.opacity = 0); }, 5000);
+}
+
+/* ============================
+   SCROLL ANIMATIONS
+============================ */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.section-title, .section-subtitle, .polaroid, .msg-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
